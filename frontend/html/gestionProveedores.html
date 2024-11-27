@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Proveedores</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 900px;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .container h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table th, table td {
+      text-align: left;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    table th {
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-buttons .button {
+      padding: 5px 10px;
+      font-size: 12px;
+      background-color: #28a745;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .action-buttons .button.delete {
+      background-color: #dc3545;
+    }
+
+    .action-buttons .button:hover {
+      opacity: 0.9;
+    }
+
+    .form-section {
+      margin-top: 30px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 5px;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Gestión de Proveedores</h1>
+    <!-- Formulario para Añadir Proveedores -->
+    <div class="form-section">
+      <h2>Añadir Proveedor</h2>
+      <form>
+        <div class="form-group">
+          <label for="razon-social">Nombre o Razón Social:</label>
+          <input type="text" id="razon-social" name="razon-social" placeholder="Introduce el nombre o razón social" required>
+        </div>
+        <div class="form-group">
+          <label for="identificacion">Identificación oficial:</label>
+          <input type="text" id="identificacion" name="identificacion" placeholder="Introduce la identificación oficial" required>
+        </div>
+        <div class="form-group">
+          <label for="tipo-proveedor">Tipo de Proveedor:</label>
+          <input type="text" id="tipo-proveedor" name="tipo-proveedor" placeholder="Categoría o industria (tecnología, alimentos, etc.)" required>
+        </div>
+        <div class="form-group">
+          <label for="rut">RUT:</label>
+          <input type="text" id="rut" name="rut" placeholder="Introduce el RUT" required>
+        </div>
+        <div class="form-group">
+          <label for="direccion">Dirección:</label>
+          <textarea id="direccion" name="direccion" placeholder="Introduce la dirección completa" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono:</label>
+          <input type="text" id="telefono" name="telefono" placeholder="Introduce el número telefónico principal" required>
+        </div>
+        <div class="form-group">
+          <label for="correo">Correo Electrónico:</label>
+          <input type="email" id="correo" name="correo" placeholder="Introduce el correo oficial" required>
+        </div>
+        <div class="form-group">
+          <label for="fecha-registro">Fecha de Registro:</label>
+          <input type="date" id="fecha-registro" name="fecha-registro" required>
+        </div>
+        <div class="form-group">
+          <label for="estado">Estado del Proveedor:</label>
+          <select id="estado" name="estado" required>
+            <option value="">Selecciona el estado</option>
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+            <option value="En proceso de validación">En proceso de validación</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="notas">Notas o Comentarios Internos:</label>
+          <textarea id="notas" name="notas" placeholder="Introduce observaciones internas" rows="3"></textarea>
+        </div>
+        <div class="button-container">
+          <button type="submit" class="button">Guardar Proveedor</button>
+          <button type="reset" class="button">Cancelar</button>
+        </div>
+            <!-- Tabla de proveedores -->
+    <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre/Razón Social</th>
+            <th>RUT</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Proveedor Ejemplo 1</td>
+            <td>12.345.678-9</td>
+            <td>+56 9 1234 5678</td>
+            <td>proveedor1@example.com</td>
+            <td>Activo</td>
+            <td class="action-buttons">
+              <button class="button">Editar</button>
+              <button class="button delete">Eliminar</button>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Proveedor Ejemplo 2</td>
+            <td>98.765.432-1</td>
+            <td>+56 9 8765 4321</td>
+            <td>proveedor2@example.com</td>
+            <td>Inactivo</td>
+            <td class="action-buttons">
+              <button class="button">Editar</button>
+              <button class="button delete">Eliminar</button>
+            </td>
+          </tr>
+          <!-- Más proveedores se pueden agregar aquí -->
+        </tbody>
+      </table>  
+      </form>
+    </div>
+  </div>
+</body>
+</html>

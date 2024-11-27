@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Inventario</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+      font-size: 24px;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .search-bar button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .search-bar button:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table th, table td {
+      text-align: left;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    table th {
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-buttons .button {
+      padding: 5px 10px;
+      font-size: 12px;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .action-buttons .button:hover {
+      background-color: #0056b3;
+    }
+
+    .editable-fields {
+      margin-top: 30px;
+    }
+
+    .editable-fields h2 {
+      font-size: 20px;
+      color: #333;
+    }
+
+    .editable-fields .form-group {
+      margin-bottom: 15px;
+    }
+
+    .editable-fields label {
+      display: block;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 5px;
+    }
+
+    .editable-fields input, .editable-fields textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .editable-fields input[readonly] {
+      background-color: #e9ecef;
+      cursor: not-allowed;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .quantity-controls button {
+      padding: 8px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .quantity-controls button:hover {
+      background-color: #0056b3;
+    }
+
+    .history-table {
+      margin-top: 20px;
+    }
+
+    .history-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .history-table th, .history-table td {
+      text-align: left;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .history-table th {
+      background-color: #f4f4f4;
+    }
+
+    .button-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .button-container button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .button-container button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Gestión de Inventario</h1>
+
+    <!-- Barra de búsqueda -->
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Buscar por nombre, categoría, proveedor o ID del producto">
+      <button type="button">Buscar</button>
+    </div>
+
+    <!-- Tabla del inventario -->
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre del Producto</th>
+          <th>Categoría</th>
+          <th>Cantidad Disponible</th>
+          <th>Precio Unitario</th>
+          <th>Proveedor</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Producto A</td>
+          <td>Tecnología</td>
+          <td>50</td>
+          <td>$1,000</td>
+          <td>Proveedor A</td>
+          <td class="action-buttons">
+            <button class="button">Ver Historial</button>
+            <button class="button">Editar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Campos editables -->
+    <div class="editable-fields">
+      <h2>Editar Campos de Producto</h2>
+      <form>
+        <div class="form-group">
+          <label for="nombre">Nombre del Producto:</label>
+          <input type="text" id="nombre" readonly value="Producto A">
+        </div>
+        <div class="form-group">
+          <label for="categoria">Categoría:</label>
+          <input type="text" id="categoria" readonly value="Tecnología">
+        </div>
+        <div class="form-group">
+          <label for="cantidad">Cantidad Disponible:</label>
+          <div class="quantity-controls">
+            <input type="number" id="cantidad" value="50">
+            <button type="button" onclick="increment()">+</button>
+            <button type="button" onclick="decrement()">-</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="precio">Precio Unitario:</label>
+          <input type="text" id="precio" readonly value="$1,000">
+        </div>
+        <div class="form-group">
+          <label for="proveedor">Proveedor:</label>
+          <input type="text" id="proveedor" readonly value="Proveedor A">
+        </div>
+        <div class="button-container">
+          <button type="submit">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Historial de cambios siempre visible -->
+    <div class="history-table">
+      <h2>Historial de Cambios</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Producto</th>
+            <th>Cantidad Cambiada</th>
+            <th>Descripción</th>
+            <th>Usuario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2023-11-01</td>
+            <td>Producto A</td>
+            <td>+10</td>
+            <td>Reposición de inventario</td>
+            <td>Juan Pérez</td>
+          </tr>
+          <tr>
+            <td>2023-10-28</td>
+            <td>Producto B</td>
+            <td>-5</td>
+            <td>Venta directa</td>
+            <td>María López</td>
+          </tr>
+          <tr>
+            <td>2023-11-02</td>
+            <td>Producto C</td>
+            <td>+20</td>
+            <td>Ajuste manual</td>
+            <td>Admin</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      function increment() {
+        const cantidad = document.getElementById('cantidad');
+        cantidad.value = parseInt(cantidad.value) + 1;
+      }
+
+      function decrement() {
+        const cantidad = document.getElementById('cantidad');
+        if (parseInt(cantidad.value) > 0) {
+          cantidad.value = parseInt(cantidad.value) - 1;
+        }
+      }
+    </script>
+  </div>
+</body>
+</html>
