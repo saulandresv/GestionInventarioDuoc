@@ -1,0 +1,5 @@
+[x] generar vista sin auticacion ni coneccion a bd
+[x] conectarlo a bd sin autenicacion, solo visualizacion
+[x] css
+
+autenicacion no es parte de este feature
