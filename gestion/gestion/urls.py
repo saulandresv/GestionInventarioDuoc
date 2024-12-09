@@ -17,11 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from usuarios import views as usuarios_views
+from proveedores import views as proveedores_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gestionUsuarios/', usuarios_views.gestionUsuarios, name='gestionUsuarios'),
     path('gestionUsuarios/<int:usuario_id>/', usuarios_views.gestionUsuarios, name='gestionUsuarios'),
     path('gestionUsuarios/eliminar/<int:usuario_id>/', usuarios_views.eliminarUsuario, name='eliminarUsuario'),
+
+    # Gestión de Proveedores
+    path('proveedores/', proveedores_views.gestionProveedores, name='gestionProveedores'),
+    path('proveedores/<int:proveedor_id>/', proveedores_views.gestionProveedores, name='gestionProveedores'),
+    path('proveedores/eliminar/<int:proveedor_id>/', proveedores_views.eliminarProveedor, name='eliminarProveedor'),
+    
 ]
 
