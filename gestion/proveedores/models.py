@@ -12,9 +12,9 @@ class Proveedor(models.Model):
     tipo_proveedor = models.CharField(
         max_length=16,
         choices=TipoProveedor.choices,
-        default=TipoProveedor.ASEO,
-        verbose_name="Tipo de Proveedor"
+        blank=False,
     )
+
     rut = models.CharField(
         max_length=12, 
         unique=True, 
