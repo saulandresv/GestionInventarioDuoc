@@ -139,3 +139,18 @@ table tr:nth-child(even) {
 .action-buttons .button.delete:hover {
     background-color: #c82333;
 }
+
+.form-group-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+    width: 100%;
+}
+
+.form-group-input:focus {
+    border-color: #007bff;
+    outline: none;
+}

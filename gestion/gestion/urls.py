@@ -21,6 +21,7 @@ from usuarios import views as usuarios_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gestionUsuarios/', usuarios_views.gestionUsuarios, name='gestionUsuarios'),
-
+    path('gestionUsuarios/<int:usuario_id>/', usuarios_views.gestionUsuarios, name='gestionUsuarios'),
+    path('gestionUsuarios/eliminar/<int:usuario_id>/', usuarios_views.eliminarUsuario, name='eliminarUsuario'),
 ]
 
