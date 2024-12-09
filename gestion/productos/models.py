@@ -3,7 +3,7 @@ class Producto(models.Model):
     nombre_producto = models.CharField(max_length=100)
     
     class Categoria(models.TextChoices):
-        ASEO = 'aseo', 'Aseo'
+        ASEO = 'Aseo', 'Aseo'
         DESPENSA = 'Despensa', 'Despensa'
         CONGELADOS = 'Congelados', 'Congelados'
         CUIDADO_PERSONAL = 'Cuidado Personal', 'Cuidado Personal'
@@ -11,12 +11,12 @@ class Producto(models.Model):
     categoria = models.CharField(
         max_length=16,
         choices=Categoria.choices,
-        default=Categoria.ASEO,
+        blank=False,
     )
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     proveedor = models.ForeignKey(
         'proveedores.Proveedor',
-        on_delete=models.PROTECT,
+        on_delete=models.PROTECT,   
         related_name='productos'
     )
     descripcion = models.TextField(blank=True, null=True)

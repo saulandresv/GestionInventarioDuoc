@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from usuarios import views as usuarios_views
 from proveedores import views as proveedores_views
-
+from productos import views as productos_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,5 +31,10 @@ urlpatterns = [
     path('proveedores/<int:proveedor_id>/', proveedores_views.gestionProveedores, name='gestionProveedores'),
     path('proveedores/eliminar/<int:proveedor_id>/', proveedores_views.eliminarProveedor, name='eliminarProveedor'),
     
+     # Gestión de Productos
+    path('productos/', productos_views.gestionProductos, name='gestionProductos'),
+    path('productos/<int:producto_id>/', productos_views.gestionProductos, name='gestionProductos'),
+    path('productos/eliminar/<int:producto_id>/', productos_views.eliminarProducto, name='eliminarProducto'),
+    path('productos/filtrar_proveedores/', productos_views.filtrar_proveedores, name='filtrarProveedores'),
 ]
 

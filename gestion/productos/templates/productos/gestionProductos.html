@@ -1,0 +1,86 @@
+<!-- gestion/productos/templates/productos/gestionProductos.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'productos/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Productos</h1>
+        <div class="form-section">
+            <h2>{% if producto_id %}Editar Producto{% else %}Añadir Producto{% endif %}</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="button-container">
+                    <button type="submit" class="button">
+                        {% if producto_id %}Actualizar Producto{% else %}Guardar Producto{% endif %}
+                    </button>
+                    <a href="{% url 'gestionProductos' %}" class="button delete">Cancelar</a>
+                </div>
+            </form>
+        </div>
+        <div class="table-container">
+            <h2>Lista de Productos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Proveedor</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto.id }}</td>
+                        <td>{{ producto.nombre_producto }}</td>
+                        <td>{{ producto.categoria }}</td>
+                        <td>{{ producto.precio }}</td>
+                        <td>{{ producto.proveedor.nombre_razon_social }}</td>
+                        <td class="action-buttons">
+                            <a href="{% url 'gestionProductos' producto.id %}" class="button">Editar</a>
+                            <form method="post" action="{% url 'eliminarProducto' producto.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="button delete" onclick="return confirm('¿Estás seguro de eliminar este producto?');">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('id_categoria').addEventListener('change', function () {
+            const categoria = this.value;
+            const proveedorSelect = document.getElementById('id_proveedor');
+
+            if (categoria) {
+                fetch(`/productos/filtrar_proveedores/?categoria=${categoria}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        proveedorSelect.innerHTML = '<option value="">Seleccione un proveedor</option>';
+                        data.forEach(proveedor => {
+                            const option = document.createElement('option');
+                            option.value = proveedor.id;
+                            option.textContent = proveedor.nombre_razon_social;
+                            proveedorSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error al filtrar proveedores:', error));
+            } else {
+                proveedorSelect.innerHTML = '<option value="">Seleccione un proveedor</option>';
+            }
+        });
+    </script>
+</body>
+</html>
