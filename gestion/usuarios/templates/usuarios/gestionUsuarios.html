@@ -11,7 +11,7 @@
     <div class="container">
         <h1>Gestión de Usuarios</h1>
         <div class="form-section">
-            <h2>Añadir Usuario</h2>
+            <h2>{% if usuario_id %}Editar Usuario{% else %}Añadir Usuario{% endif %}</h2>
             <form method="post">
                 {% csrf_token %}
                 {% if form.errors %}
@@ -23,41 +23,17 @@
                     </ul>
                 </div>
                 {% endif %}
+                {% for field in form %}
                 <div class="form-group">
-                    <label for="username">Nombre de Usuario:</label>
-                    <input type="text" id="username" name="username" required>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                    {{ field }}
                 </div>
-                <div class="form-group">
-                    <label for="first_name">Nombre:</label>
-                    <input type="text" id="first_name" name="first_name" required>
-                </div>
-                <div class="form-group">
-                    <label for="last_name">Apellido:</label>
-                    <input type="text" id="last_name" name="last_name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Correo:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
-                    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
-                </div>
-                <div class="form-group">
-                    <label for="rut">RUT:</label>
-                    <input type="text" id="rut" name="rut" required>
-                </div>
-                <div class="form-group">
-                    <label for="rol">Rol:</label>
-                    <select id="rol" name="rol" required>
-                        <option value="">Selecciona un rol</option>
-                        <option value="Administrador">Administrador</option>
-                        <option value="Usuario general">Usuario general</option>
-                    </select>
-                </div>
+                {% endfor %}
                 <div class="button-container">
-                    <button type="submit" class="button">Guardar Usuario</button>
-                    <button type="reset" class="button">Cancelar</button>
+                    <button type="submit" class="button">
+                        {% if usuario_id %}Actualizar Usuario{% else %}Guardar Usuario{% endif %}
+                    </button>
+                    <a href="{% url 'gestionUsuarios' %}" class="button delete">Cancelar</a>
                 </div>
             </form>
         </div>
@@ -83,8 +59,11 @@
                         <td>{{ usuario.rut }}</td>
                         <td>{{ usuario.rol }}</td>
                         <td class="action-buttons">
-                            <button class="button">Editar</button>
-                            <button class="button delete">Eliminar</button>
+                            <a href="{% url 'gestionUsuarios' usuario.id %}" class="button">Editar</a>
+                            <form method="post" action="{% url 'eliminarUsuario' usuario.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="button delete" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Eliminar</button>
+                            </form>
                         </td>
                     </tr>
                     {% endfor %}
