@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Proveedores</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'proveedores/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Proveedores</h1>
+        <div class="form-section">
+            <h2>{% if proveedor_id %}Editar Proveedor{% else %}Añadir Proveedor{% endif %}</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="button-container">
+                    <button type="submit" class="button">
+                        {% if proveedor_id %}Actualizar Proveedor{% else %}Guardar Proveedor{% endif %}
+                    </button>
+                    <a href="{% url 'gestionProveedores' %}" class="button delete">Cancelar</a>
+                </div>
+            </form>
+        </div>
+        <div class="table-container">
+            <h2>Lista de Proveedores</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Razón Social</th>
+                        <th>RUT</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Tipo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for proveedor in proveedores %}
+                    <tr>
+                        <td>{{ proveedor.id }}</td>
+                        <td>{{ proveedor.nombre_razon_social }}</td>
+                        <td>{{ proveedor.rut }}</td>
+                        <td>{{ proveedor.telefono }}</td>
+                        <td>{{ proveedor.email }}</td>
+                        <td>{{ proveedor.tipo_proveedor }}</td>
+                        <td class="action-buttons">
+                            <a href="{% url 'gestionProveedores' proveedor.id %}" class="button">Editar</a>
+                            <form method="post" action="{% url 'eliminarProveedor' proveedor.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="button delete" onclick="return confirm('¿Estás seguro de eliminar este proveedor?');">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
