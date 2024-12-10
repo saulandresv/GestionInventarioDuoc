@@ -8,8 +8,25 @@
     <link rel="stylesheet" href="{% static 'inventario/styles.css' %}">
 </head>
 <body>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px; position: absolute;
+        top: 0; width: 70%">
+        <div style="display: flex; align-items: center;">
+            <nav style="display: flex; gap: 10px;">
+                <a href="{% url 'gestionUsuarios' %}" class="button">Usuarios</a>
+                <a href="{% url 'gestionProveedores' %}" class="button">Proveedores</a>
+                <a href="{% url 'gestionProductos' %}" class="button">Productos</a>
+                <a href="{% url 'gestionInventario' %}" class="button">Inventario</a>
+                <a href="{% url 'historial' %}" class="button">Historial</a>
+            </nav>
+        </div>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="button delete">Cerrar Sesión</button>
+        </form>
+    </header>
+
     <div class="container">
-        <h1>Gestión de Inventario</h1>
+      <h1 style="margin-right: 20px;">Gestión de Inventario</h1>
 
         <!-- Tabla de Productos en Inventario -->
         <div class="table-container">
@@ -72,7 +89,6 @@
                 </div>
                 <div class="form-group">
                     <label for="descripcion">Descripción del Cambio:</label>
-                    <!-- Descripción fija (solo visual) -->
                     <input type="text" id="descripcion" name="descripcion" class="form-control" value="Actualización manual de inventario" readonly>
                 </div>
                 <div class="button-container">
@@ -87,6 +103,6 @@
           "{{ item.producto.id }}": {{ item.cantidad_disponible }}{% if not forloop.last %},{% endif %}
           {% endfor %}
       };
-  </script>
+    </script>
 </body>
 </html>

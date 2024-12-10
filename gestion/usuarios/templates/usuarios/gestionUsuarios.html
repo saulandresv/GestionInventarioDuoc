@@ -8,6 +8,23 @@
     <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
 </head>
 <body>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px; position: absolute;
+        top: 0; width: 70%">
+        <div style="display: flex; align-items: center;">
+            <nav style="display: flex; gap: 10px;">
+                <a href="{% url 'gestionUsuarios' %}" class="button">Usuarios</a>
+                <a href="{% url 'gestionProveedores' %}" class="button">Proveedores</a>
+                <a href="{% url 'gestionProductos' %}" class="button">Productos</a>
+                <a href="{% url 'gestionInventario' %}" class="button">Inventario</a>
+                <a href="{% url 'historial' %}" class="button">Historial</a>
+            </nav>
+        </div>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="button delete">Cerrar Sesión</button>
+        </form>
+    </header>
+
     <div class="container">
         <h1>Gestión de Usuarios</h1>
         <div class="form-section">
