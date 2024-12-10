@@ -19,6 +19,7 @@ from django.urls import path
 from usuarios import views as usuarios_views
 from proveedores import views as proveedores_views
 from productos import views as productos_views
+from inventario import views as inventario_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,5 +37,13 @@ urlpatterns = [
     path('productos/<int:producto_id>/', productos_views.gestionProductos, name='gestionProductos'),
     path('productos/eliminar/<int:producto_id>/', productos_views.eliminarProducto, name='eliminarProducto'),
     path('productos/filtrar_proveedores/', productos_views.filtrar_proveedores, name='filtrarProveedores'),
+
+      # Gestión de Inventario
+    path('inventario/', inventario_views.gestionInventario, name='gestionInventario'),
+    path('añadir/', inventario_views.añadirProductoInventario, name='añadirProductoInventario'),
+    path('modificar/', inventario_views.modificarCantidad, name='modificarCantidad'),
+
+    # Gestión de historial inventario
+    path('historial/', inventario_views.historial, name='historial'),
 ]
 

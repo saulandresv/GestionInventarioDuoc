@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Inventario</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'inventario/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Historial de Inventario</h1>
+
+        <div class="table-container">
+            <h2>Lista de Historial de Inventario</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Producto</th>
+                        <th>Cantidad Disponible</th>
+                        <th>Descripción</th>
+                        <th>Cantidad Cambiada</th>
+                        <th>Usuario</th>
+                        <th>Fecha de Cambio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for registro in historialInventario %}
+                    <tr>
+                        <td>{{ registro.id }}</td>
+                        <td>{{ registro.inventario.producto.nombre_producto }}</td>
+                        <td>{{ registro.inventario.cantidad_disponible }}</td>
+                        <td>{{ registro.descripcion }}</td>
+                        <td>{{ registro.cantidad_cambiada }}</td>
+                        <td>{{ registro.usuario.username }}</td>
+                        <td>{{ registro.fecha_cambio }}</td>
+        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
