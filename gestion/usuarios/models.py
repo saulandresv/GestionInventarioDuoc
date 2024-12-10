@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
 class Usuario(AbstractUser):
-    fecha_nacimiento = models.DateField()
+    fecha_nacimiento = models.DateField(blank=True, null=True)
     rut = models.CharField(max_length=12, unique=True)
     ROL_CHOICES = [
         ('Administrador', 'Administrador'),

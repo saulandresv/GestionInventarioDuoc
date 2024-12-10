@@ -1,3 +1,4 @@
+{% load currency_filters %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -42,7 +43,6 @@
                         <th>Cantidad Disponible</th>
                         <th>Precio Unitario</th>
                         <th>Proveedor</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,15 +52,8 @@
                         <td>{{ item.producto.nombre_producto }}</td>
                         <td>{{ item.producto.categoria }}</td>
                         <td>{{ item.cantidad_disponible }}</td>
-                        <td>{{ item.producto.precio }}</td>
+                        <td>{{ item.producto.precio|currency }}</td>
                         <td>{{ item.producto.proveedor.nombre_razon_social }}</td>
-                        <td>
-                            <form method="post" action="{% url 'modificarCantidad' %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="producto_id" value="{{ item.producto.id }}">
-                                <button type="submit" class="button">Editar</button>
-                            </form>
-                        </td>
                     </tr>
                     {% empty %}
                     <tr>

@@ -1,4 +1,5 @@
 <!-- gestion/productos/templates/productos/gestionProductos.html -->
+{% load currency_filters %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -62,7 +63,7 @@
                         <td>{{ producto.id }}</td>
                         <td>{{ producto.nombre_producto }}</td>
                         <td>{{ producto.categoria }}</td>
-                        <td>{{ producto.precio }}</td>
+                        <td>{{ producto.precio|currency }}</td>
                         <td>{{ producto.proveedor.nombre_razon_social }}</td>
                         <td class="action-buttons">
                             <a href="{% url 'gestionProductos' producto.id %}" class="button">Editar</a>
