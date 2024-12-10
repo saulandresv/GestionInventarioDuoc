@@ -26,8 +26,9 @@ def gestionProductos(request, producto_id=None):
             if form.is_valid():
                 form.save()
                 messages.success(request, "Producto creado exitosamente.")
+                # TODO: agregar un registro a inventario con cantidad 0 y id del producto que se creo 
                 return redirect('gestionProductos')
-
+            
     productos = Producto.objects.all()
     return render(request, 'productos/gestionProductos.html', {
         'form': form,

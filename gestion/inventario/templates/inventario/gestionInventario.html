@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Inventario</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'inventario/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Inventario</h1>
+
+        <!-- Tabla de Productos en Inventario -->
+        <div class="table-container">
+            <h2>Productos en Inventario</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre del Producto</th>
+                        <th>Categoría</th>
+                        <th>Cantidad Disponible</th>
+                        <th>Precio Unitario</th>
+                        <th>Proveedor</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in inventarios %}
+                    <tr>
+                        <td>{{ item.producto.id }}</td>
+                        <td>{{ item.producto.nombre_producto }}</td>
+                        <td>{{ item.producto.categoria }}</td>
+                        <td>{{ item.cantidad_disponible }}</td>
+                        <td>{{ item.producto.precio }}</td>
+                        <td>{{ item.producto.proveedor.nombre_razon_social }}</td>
+                        <td>
+                            <form method="post" action="{% url 'modificarCantidad' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="producto_id" value="{{ item.producto.id }}">
+                                <button type="submit" class="button">Editar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7">No hay productos en el inventario.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Formulario para Modificar Cantidades -->
+        <div class="form-section" style="margin-top: 40px;">
+            <h2>Modificar Cantidad</h2>
+            <form method="post" action="{% url 'modificarCantidad' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="producto-id">Producto:</label>
+                    <select id="producto-id" name="producto_id" class="form-control" required>
+                        <option value="">Seleccione un producto...</option>
+                        {% for item in inventarios %}
+                        <option value="{{ item.producto.id }}">{{ item.producto.nombre_producto }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cantidad-disponible">Cantidad Disponible:</label>
+                    <input type="number" id="cantidad-disponible" name="cantidad_disponible" required>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción del Cambio:</label>
+                    <!-- Descripción fija (solo visual) -->
+                    <input type="text" id="descripcion" name="descripcion" class="form-control" value="Actualización manual de inventario" readonly>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="button">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
