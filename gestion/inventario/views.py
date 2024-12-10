@@ -3,6 +3,8 @@ from .models import Inventario
 from productos.models import Producto
 from django.contrib import messages
 from inventario.models import HistorialInventario
+from .forms import HistorialInventarioForm
+
 def gestionInventario(request):
     # Productos registrados en el inventario
     inventarios = Inventario.objects.select_related('producto').all()
@@ -44,6 +46,8 @@ def modificarCantidad(request):
         inventario, created = Inventario.objects.get_or_create(producto=producto)
         inventario.cantidad_disponible = cantidad_nueva
         inventario.save()
+        # TODO: CREAR UN REGISTRO HISTORIAL INVENTARIO CON EL ID DEL INVENTARIO CREADO ANTERIORMENTE
+
 
         # Mensaje de éxito
         if created:
@@ -53,10 +57,47 @@ def modificarCantidad(request):
         
         return redirect('gestionInventario')
 
-def historial(request):
+def historial(request, historial_id=None):
+    # Si se proporciona un ID, estamos editando un historial existente
+    if historial_id:
+        registro = get_object_or_404(HistorialInventario, id=historial_id)
+        form = HistorialInventarioForm(instance=registro)  # Cargar datos existentes
+    else:
+        registro = None  # Para un nuevo historial
+        form = HistorialInventarioForm()
+
     if request.method == 'POST':
-        pass
-    historialInventario = HistorialInventario.objects.exclude(id__in=Inventario.objects.values('id'))
+        if registro:  # Caso de edición
+            form = HistorialInventarioForm(request.POST, instance=registro)
+            if form.is_valid():
+                historial_actualizado = form.save(commit=False)
+                # Aquí puedes modificar más campos si es necesario
+                historial_actualizado.save()
+                messages.success(request, "Historial de inventario actualizado exitosamente")
+                return redirect('historial')
+        else:  # Caso de creación
+            form = HistorialInventarioForm(request.POST)
+            if form.is_valid():
+                nuevo_historial = form.save(commit=False)
+                # Asignar usuario actual al historial
+                nuevo_historial.usuario = request.user
+                # Si quieres asignar inventario y cantidad_cambiada aquí, hazlo:
+                # Por ejemplo, asumiendo inventario_id o cantidad_cambiada vienen en POST
+                # nuevo_historial.inventario = Inventario.objects.get(id=algún_id)
+                # nuevo_historial.cantidad_cambiada = cantidad
+                nuevo_historial.save()
+                messages.success(request, "Historial de inventario creado exitosamente")
+                return redirect('historial')
+
+    # Obtener todos los registros de historial de inventario
+    historialInventario = (
+        HistorialInventario.objects
+        .select_related('inventario', 'inventario__producto', 'usuario')
+        .all()
+    )
+
     return render(request, 'inventario/historialInventario.html', {
         'historialInventario': historialInventario,
+        'form': form,
+        'historial_id': historial_id
     })
