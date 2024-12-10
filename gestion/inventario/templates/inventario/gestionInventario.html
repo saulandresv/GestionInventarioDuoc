@@ -12,9 +12,11 @@
         top: 0; width: 70%">
         <div style="display: flex; align-items: center;">
             <nav style="display: flex; gap: 10px;">
-                <a href="{% url 'gestionUsuarios' %}" class="button">Usuarios</a>
-                <a href="{% url 'gestionProveedores' %}" class="button">Proveedores</a>
-                <a href="{% url 'gestionProductos' %}" class="button">Productos</a>
+                {% if request.user.rol == "Administrador" %}
+                  <a href="{% url 'gestionUsuarios' %}" class="button">Usuarios</a>
+                  <a href="{% url 'gestionProveedores' %}" class="button">Proveedores</a>
+                  <a href="{% url 'gestionProductos' %}" class="button">Productos</a>
+                {% endif %}
                 <a href="{% url 'gestionInventario' %}" class="button">Inventario</a>
                 <a href="{% url 'historial' %}" class="button">Historial</a>
             </nav>

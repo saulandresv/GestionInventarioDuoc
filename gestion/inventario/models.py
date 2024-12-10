@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
+from django.conf import settings
 
 class Inventario(models.Model):
     producto = models.ForeignKey(
@@ -22,7 +24,7 @@ class HistorialInventario(models.Model):
     cantidad_cambiada = models.IntegerField()
     descripcion = models.TextField()
     usuario = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.PROTECT,
         related_name='cambios_inventario'
     )

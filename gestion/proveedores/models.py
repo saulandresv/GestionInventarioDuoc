@@ -18,8 +18,7 @@ class Proveedor(models.Model):
     rut = models.CharField(
         max_length=12, 
         unique=True, 
-        verbose_name="RUT", 
-        help_text="Debe ingresar el RUT en el formato 12345678-9"
+        verbose_name="RUT"
     )
     direccion = models.CharField(
         max_length=255, 
@@ -31,8 +30,7 @@ class Proveedor(models.Model):
         max_length=15, 
         blank=True, 
         null=True, 
-        verbose_name="Teléfono", 
-        help_text="Ingrese el teléfono en formato internacional, por ejemplo: +56 9 1234 5678"
+        verbose_name="Teléfono"
     )
     email = models.EmailField(
         max_length=100, 
