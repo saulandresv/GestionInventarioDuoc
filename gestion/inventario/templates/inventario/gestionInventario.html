@@ -59,12 +59,12 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="producto-id">Producto:</label>
-                    <select id="producto-id" name="producto_id" class="form-control" required>
-                        <option value="">Seleccione un producto...</option>
-                        {% for item in inventarios %}
-                        <option value="{{ item.producto.id }}">{{ item.producto.nombre_producto }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="producto-id" name="producto_id" class="form-control" required onchange="document.getElementById('cantidad-disponible').value = this.value ? productQuantities[this.value] : ''">
+                      <option value="">Seleccione un producto...</option>
+                      {% for item in inventarios %}
+                          <option value="{{ item.producto.id }}">{{ item.producto.nombre_producto }}</option>
+                      {% endfor %}
+                  </select>
                 </div>
                 <div class="form-group">
                     <label for="cantidad-disponible">Cantidad Disponible:</label>
@@ -81,5 +81,12 @@
             </form>
         </div>
     </div>
+    <script>
+      var productQuantities = {
+          {% for item in inventarios %}
+          "{{ item.producto.id }}": {{ item.cantidad_disponible }}{% if not forloop.last %},{% endif %}
+          {% endfor %}
+      };
+  </script>
 </body>
 </html>

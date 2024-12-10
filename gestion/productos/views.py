@@ -5,6 +5,7 @@ from .forms import ProductoForm
 from django.contrib import messages
 from django.http import JsonResponse
 from proveedores.models import Proveedor
+from inventario.models import Inventario
 
 def gestionProductos(request, producto_id=None):
     if producto_id:
@@ -24,9 +25,14 @@ def gestionProductos(request, producto_id=None):
         else:
             form = ProductoForm(request.POST)
             if form.is_valid():
-                form.save()
+                nuevo_producto = form.save()
                 messages.success(request, "Producto creado exitosamente.")
-                # TODO: agregar un registro a inventario con cantidad 0 y id del producto que se creo y descricion creacion de producto
+                
+                # Crear un registro en Inventario con cantidad 0
+                nuevo_inventario = Inventario.objects.create(
+                    producto=nuevo_producto,
+                    cantidad_disponible=0
+                )
                 return redirect('gestionProductos')
             
     productos = Producto.objects.all()

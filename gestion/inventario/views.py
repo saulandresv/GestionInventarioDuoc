@@ -32,7 +32,7 @@ def añadirProductoInventario(request):
 
 def modificarCantidad(request):
     """
-    Modifica o agrega un producto al inventario.
+    Modifica o agrega un producto al inventario y registra la acción en HistorialInventario.
     """
     if request.method == 'POST':
         producto_id = request.POST.get('producto_id')
@@ -42,19 +42,33 @@ def modificarCantidad(request):
         # Verificar si el producto existe
         producto = get_object_or_404(Producto, id=producto_id)
 
-        # Crear o actualizar el inventario para el producto seleccionado
+        # Obtener o crear el inventario para el producto
         inventario, created = Inventario.objects.get_or_create(producto=producto)
+        
+        # Guardar la cantidad anterior antes de actualizar
+        cantidad_anterior = inventario.cantidad_disponible
+
+        # Actualizar la cantidad disponible en el inventario
         inventario.cantidad_disponible = cantidad_nueva
         inventario.save()
-        # TODO: CREAR UN REGISTRO HISTORIAL INVENTARIO CON EL ID DEL INVENTARIO CREADO ANTERIORMENTE
 
+        # Calcular la cantidad cambiada
+        cantidad_cambiada = cantidad_nueva - cantidad_anterior
+
+        # Crear registro en HistorialInventario
+        HistorialInventario.objects.create(
+            inventario=inventario,
+            cantidad_cambiada=cantidad_cambiada,
+            descripcion=descripcion,
+            usuario=request.user
+        )
 
         # Mensaje de éxito
         if created:
             messages.success(request, f"Producto '{producto.nombre_producto}' agregado al inventario con éxito.")
         else:
             messages.success(request, f"Cantidad de '{producto.nombre_producto}' actualizada correctamente.")
-        
+
         return redirect('gestionInventario')
 
 def historial(request, historial_id=None):
